@@ -29,5 +29,14 @@ times
 
 hive
 ---
-- time per day
-- price of mounth
+- hour per day - hpd
+- price per mounth - ppm
+
+
+
+## todo
+- [ ] crud times
+- [ ] setting page
+- [ ] calculat page - at first show result of set setting data
+- [ ] detail page
+- [ ] home page - show time records
