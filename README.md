@@ -39,4 +39,4 @@ hive
 - [x] setting page
 - [x] calculat page - at first show result of set setting data
 - [ ] detail page
-- [ ] home page - show time records
+- [x] home page - show time records
