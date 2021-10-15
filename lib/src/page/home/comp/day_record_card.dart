@@ -28,14 +28,26 @@ class DayRecordCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          Column(
-            children: [for (final time in times) timeCard(time)],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(sumOfTimes(times)),
-            ],
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Column(
+                    children: [for (final time in times) timeCard(time)],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(sumOfTimes(times)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -43,21 +55,24 @@ class DayRecordCard extends StatelessWidget {
   }
 
   Widget timeCard(Time time) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(DateFormat.Hms().format(time.start)),
-        Text(DateFormat.Hms().format(time.end)),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.lightGreen[100],
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(DateFormat.Hms().format(time.start)),
+          Text(DateFormat.Hms().format(time.end)),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.lightGreen[100],
+            ),
+            padding: const EdgeInsets.all(3),
+            child: Text(
+                (time.end.difference(time.start)).toString().substring(0, 8)),
           ),
-          padding: const EdgeInsets.all(3),
-          child: Text(
-              (time.end.difference(time.start)).toString().substring(0, 8)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

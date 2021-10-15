@@ -28,6 +28,7 @@ class HomePage extends HookWidget {
     }, []);
 
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       body: SafeArea(
         child: Column(
           children: [
@@ -46,32 +47,39 @@ class HomePage extends HookWidget {
     );
   }
 
-  Row appBar(BuildContext context) {
-    return Row(
-      children: [
-        const TextButton(
-          child: Text('Detail Page'),
-          onPressed: null, // TODO:
+  Widget appBar(BuildContext context) {
+    return Material(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            const TextButton(
+              child: Text('Detail Page'),
+              onPressed: null, // TODO:
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings),
+              // child: const Text('Setting'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (c) => const SettingPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.calculate),
+              // child: const Text('Calculator'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (c) => const CalculatePage()),
+                );
+              },
+            ),
+          ],
         ),
-        TextButton(
-          child: const Text('Setting Page'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (c) => const SettingPage()),
-            );
-          },
-        ),
-        TextButton(
-          child: const Text('Calculator Page'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (c) => const CalculatePage()),
-            );
-          },
-        ),
-      ],
+      ),
     );
   }
 

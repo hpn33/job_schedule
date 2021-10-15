@@ -41,21 +41,32 @@ class SettingPage extends HookWidget {
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      const Text('Hour Per Day'),
-                      const Spacer(),
-                      Expanded(
-                          child: TextField(controller: hourTextController)),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Text('Price Per Mounth'),
-                      const Spacer(),
-                      Expanded(
-                          child: TextField(controller: priceTextController)),
-                    ],
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Text('Hour Per Day'),
+                              const Spacer(),
+                              Expanded(
+                                  child: TextField(
+                                      controller: hourTextController)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text('Price Per Mounth'),
+                              const Spacer(),
+                              Expanded(
+                                  child: TextField(
+                                      controller: priceTextController)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   Row(
                     children: [

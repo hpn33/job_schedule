@@ -29,29 +29,60 @@ class CalculatePage extends HookWidget {
             Padding(
               padding: const EdgeInsets.all(36.0),
               child: Center(
-                child: SizedBox(
-                  width: 350,
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          setDefault(ppmController, hpdController);
-                        },
-                        child: const Text('Default'),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 350,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setDefault(ppmController, hpdController);
+                                    },
+                                    child: const Text('Default'),
+                                  ),
+                                ],
+                              ),
+                              TextField(controller: ppmController),
+                              TextField(controller: hpdController),
+                              // const Divider(),
+                            ],
+                          ),
+                        ),
                       ),
-                      TextField(controller: ppmController),
-                      TextField(controller: hpdController),
-                      const Divider(),
-                      Text(
-                        hpm(hpdController),
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        pph(ppmController, hpdController),
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          hpm(hpdController),
+                          style: TextStyle(
+                            fontSize: 36,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        const Text('hpm'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          pph(ppmController, hpdController),
+                          style: TextStyle(
+                            fontSize: 36,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        const Text('pph'),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -78,7 +109,7 @@ class CalculatePage extends HookWidget {
       return 'hpd not true';
     }
 
-    return '(hour per mounth) => ' + (hpd * 30).toString();
+    return (hpd * 30).toString();
   }
 
   String pph(
@@ -96,6 +127,6 @@ class CalculatePage extends HookWidget {
       return 'ppm not true';
     }
 
-    return '(price per hour) => ' + (ppm / (hpd * 30)).toStringAsFixed(2);
+    return (ppm / (hpd * 30)).toStringAsFixed(2);
   }
 }
