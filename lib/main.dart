@@ -5,7 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'app.dart';
 
 Future<void> main() async {
-  await Hive.initFlutter('job_schedule');
+  await hiveInit();
 
   runApp(const ProviderScope(child: MyApp()));
+}
+
+hiveInit() async {
+  await Hive.initFlutter('job_schedule_data');
+
+  await Hive.openBox('config');
 }
