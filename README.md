@@ -36,7 +36,7 @@ hive
 
 ## todo
 - [ ] crud times
-- [ ] setting page
-- [ ] calculat page - at first show result of set setting data
+- [x] setting page
+- [x] calculat page - at first show result of set setting data
 - [ ] detail page
 - [ ] home page - show time records

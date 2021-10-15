@@ -50,7 +50,7 @@ class SettingPage extends HookWidget {
                   final box = Hive.box('config');
 
                   await box.put('hpd', hourTextController.text);
-                  await box.put('ppm', hourTextController.text);
+                  await box.put('ppm', priceTextController.text);
 
                   message.value = 'save';
                 },

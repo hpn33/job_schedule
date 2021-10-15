@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:job_schedule/src/page/calculator/calculate_page.dart';
 import 'package:job_schedule/src/page/setting/setting.dart';
 
 class HomePage extends HookWidget {
@@ -46,7 +47,10 @@ class HomePage extends HookWidget {
                 TextButton(
                   child: const Text('Calculator Page'),
                   onPressed: () {
-                    // TODO:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (c) => const CalculatePage()),
+                    );
                   },
                 ),
                 const Spacer(),
