@@ -12,6 +12,20 @@ class TimeDao extends DatabaseAccessor<Database> with _$TimeDaoMixin {
   // Called by the AppDatabase class
   TimeDao(this.db) : super(db);
 
+  Future<int> add(DateTime startTime, DateTime endTime) {
+    return into(times).insert(
+      TimesCompanion.insert(
+        descript: '',
+        start: startTime,
+        end: endTime,
+        createAt: DateTime.now(),
+        updateAt: DateTime.now(),
+      ),
+    );
+  }
+
+  Stream<List<Time>> watching() => select(times).watch();
+
   // Stream<List<Time>> watching() => select(contents).watch();
 
   // Future<int> add(String title, String content) => into(contents)

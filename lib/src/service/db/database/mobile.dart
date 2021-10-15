@@ -8,7 +8,10 @@ import 'package:path/path.dart' as p;
 
 import '../database.dart';
 
-Database constructDb({String fileName = 'numemo', bool logStatements = false}) {
+Database constructDb({
+  String fileName = 'database',
+  bool logStatements = false,
+}) {
   final fName = '$fileName.sqlite';
 
   if (Platform.isIOS || Platform.isAndroid) {
