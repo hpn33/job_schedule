@@ -28,42 +28,56 @@ class SettingPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              const Text('Hour Per Day'),
-              Expanded(child: TextField(controller: hourTextController)),
-            ],
-          ),
-          Row(
-            children: [
-              const Text('Price Per Mounth'),
-              Expanded(child: TextField(controller: priceTextController)),
-            ],
-          ),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final box = Hive.box('config');
+      backgroundColor: Colors.grey[400],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              children: const [
+                BackButton(),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text('Hour Per Day'),
+                      const Spacer(),
+                      Expanded(
+                          child: TextField(controller: hourTextController)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text('Price Per Mounth'),
+                      const Spacer(),
+                      Expanded(
+                          child: TextField(controller: priceTextController)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final box = Hive.box('config');
 
-                  await box.put('hpd', hourTextController.text);
-                  await box.put('ppm', priceTextController.text);
+                          await box.put('hpd', hourTextController.text);
+                          await box.put('ppm', priceTextController.text);
 
-                  message.value = 'save';
-                },
-                child: const Text('Save'),
+                          message.value = 'save';
+                        },
+                        child: const Text('Save'),
+                      ),
+                      Text(message.value),
+                    ],
+                  ),
+                ],
               ),
-              Text(message.value),
-            ],
-          ),
-
-          // const Center(
-          //   child: Text('Setting Page'),
-          // ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

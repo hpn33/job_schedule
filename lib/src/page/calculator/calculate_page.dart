@@ -21,21 +21,40 @@ class CalculatePage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.grey[400],
       body: SafeArea(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                setDefault(ppmController, hpdController);
-              },
-              child: const Text('Default'),
+            Row(children: const [BackButton()]),
+            Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Center(
+                child: SizedBox(
+                  width: 350,
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setDefault(ppmController, hpdController);
+                        },
+                        child: const Text('Default'),
+                      ),
+                      TextField(controller: ppmController),
+                      TextField(controller: hpdController),
+                      const Divider(),
+                      Text(
+                        hpm(hpdController),
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        pph(ppmController, hpdController),
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            TextField(controller: ppmController),
-            TextField(controller: hpdController),
-            const Divider(),
-            Text(hpm(hpdController)),
-            Text(pph(ppmController, hpdController)),
           ],
         ),
       ),
@@ -59,7 +78,7 @@ class CalculatePage extends HookWidget {
       return 'hpd not true';
     }
 
-    return (hpd * 30).toString() + ' (hour per mounth)';
+    return '(hour per mounth) => ' + (hpd * 30).toString();
   }
 
   String pph(
@@ -77,6 +96,6 @@ class CalculatePage extends HookWidget {
       return 'ppm not true';
     }
 
-    return (ppm / (hpd * 30)).toStringAsFixed(2) + ' (price per hour)';
+    return '(price per hour) => ' + (ppm / (hpd * 30)).toStringAsFixed(2);
   }
 }
