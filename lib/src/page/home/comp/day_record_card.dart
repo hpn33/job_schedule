@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:job_schedule/src/service/db/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,10 @@ class DayRecordCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(sumOfTimes(times)),
+                        textDifTimeWithSetTime(times),
+                        // Text(difTimeWithSetTime(times)),
+                        const SizedBox(width: 5),
+                        Text(DateFormat.Hm().format(sumOfTimes(times))),
                       ],
                     ),
                   ),
@@ -147,7 +151,7 @@ class DayRecordCard extends StatelessWidget {
     return ((time.hour * 60) + time.minute + (time.second / 60)).toInt();
   }
 
-  String sumOfTimes(List<Time> times) {
+  DateTime sumOfTimes(List<Time> times) {
     final sumOfTime = times.fold<Duration>(
       const Duration(),
       (previousValue, element) =>
@@ -162,6 +166,29 @@ class DayRecordCard extends StatelessWidget {
       sumOfTime.inMinutes.remainder(60),
     );
 
-    return DateFormat.Hm().format(dtime);
+    return dtime;
+  }
+
+  Duration difTimeWithSetTime(List<Time> times) {
+    final box = Hive.box('config');
+    final hpd = int.parse(box.get('hpd', defaultValue: 0));
+
+    return sumOfTimes(times).difference(DateTime(0, 0, 0, hpd));
+  }
+
+  String _printDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  Widget textDifTimeWithSetTime(List<Time> times) {
+    final dTime = difTimeWithSetTime(times);
+
+    return Text(
+      _printDuration(dTime),
+      style: TextStyle(color: dTime.isNegative ? Colors.red : Colors.green),
+    );
   }
 }
