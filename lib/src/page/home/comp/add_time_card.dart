@@ -13,7 +13,7 @@ class AddTimeCard extends HookWidget {
     final endTime = useState(DateTime.now().add(const Duration(hours: 1)));
 
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
       child: Card(
         child: Row(
           children: [

@@ -175,7 +175,7 @@ class HomePage extends HookWidget {
         final midHPD = useProvider(midOfHPD).state;
 
         return Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

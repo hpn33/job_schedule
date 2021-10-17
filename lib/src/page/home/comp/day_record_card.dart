@@ -12,7 +12,7 @@ class DayRecordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           Row(
@@ -81,17 +81,27 @@ class DayRecordCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(DateFormat.Hms().format(time.start)),
-                    Text(DateFormat.Hms().format(time.end)),
+                    Text(DateFormat.Hm().format(time.start)),
+                    Text(DateFormat.Hm().format(time.end)),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.lightGreen[100],
                       ),
                       padding: const EdgeInsets.all(3),
-                      child: Text((time.end.difference(time.start))
-                          .toString()
-                          .substring(0, 8)),
+                      child: Builder(builder: (context) {
+                        final difTime = (time.end.difference(time.start));
+
+                        final dtime = DateTime(
+                          0,
+                          0,
+                          0,
+                          difTime.inHours,
+                          difTime.inMinutes.remainder(60),
+                        );
+
+                        return Text(DateFormat.Hm().format(dtime));
+                      }),
                     ),
                   ],
                 ),
@@ -144,6 +154,14 @@ class DayRecordCard extends StatelessWidget {
           element.end.difference(element.start) + previousValue,
     );
 
-    return "${sumOfTime.inHours}:${sumOfTime.inMinutes.remainder(60)}:${(sumOfTime.inSeconds.remainder(60))}";
+    final dtime = DateTime(
+      0,
+      0,
+      0,
+      sumOfTime.inHours,
+      sumOfTime.inMinutes.remainder(60),
+    );
+
+    return DateFormat.Hm().format(dtime);
   }
 }
