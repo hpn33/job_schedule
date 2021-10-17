@@ -60,45 +60,81 @@ class DayRecordCard extends StatelessWidget {
   Widget timeCard(BuildContext context, Time time) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(DateFormat.Hms().format(time.start)),
-            Text(DateFormat.Hms().format(time.end)),
-            Row(
+      child: Row(
+        children: [
+          PopupMenuButton<String>(
+            onSelected: (String result) {
+              if (result == 'delete') {
+                context.read(dbProvider).timeDao.remove(time);
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'delete',
+                child: Text('delete'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.lightGreen[100],
-                  ),
-                  padding: const EdgeInsets.all(3),
-                  child: Text((time.end.difference(time.start))
-                      .toString()
-                      .substring(0, 8)),
-                ),
-                PopupMenuButton<String>(
-                  onSelected: (String result) {
-                    if (result == 'delete') {
-                      context.read(dbProvider).timeDao.remove(time);
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    const PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Text('delete'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(DateFormat.Hms().format(time.start)),
+                    Text(DateFormat.Hms().format(time.end)),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.lightGreen[100],
+                      ),
+                      padding: const EdgeInsets.all(3),
+                      child: Text((time.end.difference(time.start))
+                          .toString()
+                          .substring(0, 8)),
                     ),
                   ],
-                )
+                ),
+
+                ///
+                const SizedBox(height: 5),
+
+                ///
+                Row(
+                  children: [
+                    Expanded(
+                      flex: getFlexOfTime(time.start),
+                      child: Container(
+                        color: Colors.grey,
+                        height: 5,
+                      ),
+                    ),
+                    Expanded(
+                      flex: getFlexOfTime(time.end) - getFlexOfTime(time.start),
+                      child: Container(
+                        color: Colors.green,
+                        height: 5,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1440 - getFlexOfTime(time.end),
+                      child: Container(
+                        color: Colors.grey,
+                        height: 5,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  int getFlexOfTime(DateTime time) {
+    return ((time.hour * 60) + time.minute + (time.second / 60)).toInt();
   }
 
   String sumOfTimes(List<Time> times) {
