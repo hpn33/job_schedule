@@ -40,4 +40,4 @@ hive
 - [x] calculat page - at first show result of set setting data
 - [ ] detail page
 - [x] home page - show time records
-- [ ] sort the times of day by start time and long of time
+- [x] sort the times of day by start time and long of time

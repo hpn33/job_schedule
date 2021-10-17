@@ -96,9 +96,11 @@ class HomePage extends HookWidget {
               return const Center(child: Text('something wrong'));
             }
 
+            /// group by day
             final dayGroupTemp = <String, List<Time>>{};
 
-            for (final i in snapshot.data!) {
+            for (final i in snapshot.data!
+              ..sort((a, b) => b.start.compareTo(a.start))) {
               final date = i.start.toString().substring(0, 10);
 
               if (!dayGroupTemp.containsKey(date)) {
@@ -108,6 +110,7 @@ class HomePage extends HookWidget {
               dayGroupTemp[date]!.add(i);
             }
 
+            /// sort day
             final sort = dayGroupTemp.keys.toList()
               ..sort((a, b) => b.compareTo(a));
 
