@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:job_schedule/src/service/db/database.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DayRecordCard extends StatelessWidget {
   final String day;
@@ -34,7 +35,9 @@ class DayRecordCard extends StatelessWidget {
               child: Column(
                 children: [
                   Column(
-                    children: [for (final time in times) timeCard(time)],
+                    children: [
+                      for (final time in times) timeCard(context, time)
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -54,24 +57,46 @@ class DayRecordCard extends StatelessWidget {
     );
   }
 
-  Widget timeCard(Time time) {
+  Widget timeCard(BuildContext context, Time time) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(DateFormat.Hms().format(time.start)),
-          Text(DateFormat.Hms().format(time.end)),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.lightGreen[100],
+      child: InkWell(
+        onTap: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(DateFormat.Hms().format(time.start)),
+            Text(DateFormat.Hms().format(time.end)),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.lightGreen[100],
+                  ),
+                  padding: const EdgeInsets.all(3),
+                  child: Text((time.end.difference(time.start))
+                      .toString()
+                      .substring(0, 8)),
+                ),
+                PopupMenuButton<String>(
+                  onSelected: (String result) {
+                    if (result == 'delete') {
+                      context.read(dbProvider).timeDao.remove(time);
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'delete',
+                      child: Text('delete'),
+                    ),
+                  ],
+                )
+              ],
             ),
-            padding: const EdgeInsets.all(3),
-            child: Text(
-                (time.end.difference(time.start)).toString().substring(0, 8)),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

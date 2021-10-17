@@ -26,6 +26,8 @@ class TimeDao extends DatabaseAccessor<Database> with _$TimeDaoMixin {
 
   Stream<List<Time>> watching() => select(times).watch();
 
+  Future<int> remove(Time time) => delete(times).delete(time);
+
   // Stream<List<Time>> watching() => select(contents).watch();
 
   // Future<int> add(String title, String content) => into(contents)
