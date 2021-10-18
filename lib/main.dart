@@ -14,7 +14,9 @@ hiveInit() async {
   await Hive.initFlutter('job_schedule_data');
 
   final box = await Hive.openBox('config');
-  await box.put('hpd', '8');
-  await box.put('ppm', '10000000');
-  await box.put('firstTime', true);
+  if (!box.containsKey('hpd')) await box.put('hpd', '8');
+
+  if (!box.containsKey('ppm')) await box.put('ppm', '10000000');
+
+  if (!box.containsKey('firstTime')) await box.put('firstTime', true);
 }
