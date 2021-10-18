@@ -15,8 +15,8 @@ class SettingPage extends HookWidget {
     useEffect(() {
       final box = Hive.box('config');
 
-      hourTextController.text = box.get('hpd');
-      priceTextController.text = box.get('ppm');
+      hourTextController.text = box.get('hpd', defaultValue: '8');
+      priceTextController.text = box.get('ppm', defaultValue: '10000000');
     }, []);
 
     useEffect(

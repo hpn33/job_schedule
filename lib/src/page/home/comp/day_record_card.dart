@@ -171,7 +171,7 @@ class DayRecordCard extends StatelessWidget {
 
   Duration difTimeWithSetTime(List<Time> times) {
     final box = Hive.box('config');
-    final hpd = int.parse(box.get('hpd', defaultValue: 0));
+    final hpd = int.parse(box.get('hpd', defaultValue: '0'));
 
     return sumOfTimes(times).difference(DateTime(0, 0, 0, hpd));
   }

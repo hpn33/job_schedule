@@ -13,5 +13,8 @@ Future<void> main() async {
 hiveInit() async {
   await Hive.initFlutter('job_schedule_data');
 
-  await Hive.openBox('config');
+  final box = await Hive.openBox('config');
+  await box.put('hpd', '8');
+  await box.put('ppm', '10000000');
+  await box.put('firstTime', true);
 }

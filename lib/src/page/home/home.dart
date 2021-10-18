@@ -62,11 +62,16 @@ final dayCounterP = StateProvider<int>(
 );
 
 final sumOfTimesP = StateProvider<Duration>(
-  (ref) => ref
-      .watch(timesStateP)
-      .state
-      .map((e) => e.end.difference(e.start))
-      .reduce((value, element) => value + element),
+  (ref) {
+    final maped =
+        ref.watch(timesStateP).state.map((e) => e.end.difference(e.start));
+
+    if (maped.isEmpty) {
+      return const Duration();
+    }
+
+    return maped.reduce((value, element) => value + element);
+  },
 );
 
 final midOfHPD = StateProvider(
@@ -84,16 +89,18 @@ class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      final box = Hive.box('config');
+      Future.delayed(const Duration(seconds: 3)).then((value) {
+        final box = Hive.box('config');
 
-      if (box.get('firstTime', defaultValue: true)) {
-        box.put('firstTime', false);
+        if (box.get('firstTime', defaultValue: true)) {
+          box.put('firstTime', false);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (c) => const SettingPage()),
-        );
-      }
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (c) => const SettingPage()),
+          );
+        }
+      });
     }, []);
 
     return Scaffold(
