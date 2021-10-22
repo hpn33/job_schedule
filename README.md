@@ -41,3 +41,4 @@ hive
 - [ ] detail page
 - [x] home page - show time records
 - [x] sort the times of day by start time and long of time
+- [ ] set start of month
