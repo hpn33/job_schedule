@@ -38,7 +38,7 @@ hive
 - [ ] crud times
 - [x] setting page
 - [x] calculat page - at first show result of set setting data
-- [ ] detail page
+- [ ] ~~detail page~~
 - [x] home page - show time records
 - [x] sort the times of day by start time and long of time
 - [ ] set start of month

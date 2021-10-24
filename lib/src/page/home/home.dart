@@ -4,86 +4,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:job_schedule/src/page/calculator/calculate_page.dart';
 import 'package:job_schedule/src/page/home/comp/add_time_card.dart';
 import 'package:job_schedule/src/page/setting/setting.dart';
-import 'package:job_schedule/src/service/db/database.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import 'comp/day_record_card.dart';
-
-final timesP = StreamProvider((ref) => ref.read(dbProvider).timeDao.watching());
-final timesStateP = StateProvider<List<Time>>(
-  (ref) => ref.watch(timesP).when(
-        data: (data) => data,
-        loading: () => [],
-        error: (s, o) => [],
-      ),
-);
-final sortedTimesP = StateProvider<Map<String, List<Time>>>((ref) {
-  final times = ref.watch(timesP);
-
-  return times.when(
-    data: (data) {
-      /// group by day
-      final dayGroupTemp = <String, List<Time>>{};
-
-      for (final i in data..sort((a, b) => b.start.compareTo(a.start))) {
-        final date = i.start.toString().substring(0, 10);
-
-        if (!dayGroupTemp.containsKey(date)) {
-          dayGroupTemp[date] = [];
-        }
-
-        dayGroupTemp[date]!.add(i);
-      }
-
-      /// sort day
-      final sort = dayGroupTemp.keys.toList()..sort((a, b) => b.compareTo(a));
-
-      final dayGroup = <String, List<Time>>{};
-
-      for (final i in sort) {
-        dayGroup[i] = dayGroupTemp[i]!;
-      }
-
-      return dayGroup;
-    },
-    loading: () => {},
-    error: (s, o) => {},
-  );
-});
-
-final dayCounterP = StateProvider<int>(
-  (ref) => ref
-      .watch(timesStateP)
-      .state
-      .map((e) => e.start.toString().substring(0, 10))
-      .toList()
-      .uniqe()
-      .length,
-);
-
-final sumOfTimesP = StateProvider<Duration>(
-  (ref) {
-    final maped =
-        ref.watch(timesStateP).state.map((e) => e.end.difference(e.start));
-
-    if (maped.isEmpty) {
-      return const Duration();
-    }
-
-    return maped.reduce((value, element) => value + element);
-  },
-);
-
-final midOfHPD = StateProvider(
-  (ref) {
-    final days = ref.watch(dayCounterP).state;
-    final allTime = ref.watch(sumOfTimesP).state;
-
-    return (allTime.inMinutes / 60.0) / days;
-  },
-);
+import 'home_p.dart';
 
 class HomePage extends HookWidget {
+  static final selectedDateP =
+      StateProvider<DateTime?>((ref) => DateTime.now());
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -103,6 +33,8 @@ class HomePage extends HookWidget {
       });
     }, []);
 
+    final selectedDay = useProvider(selectedDateP).state;
+
     return Scaffold(
       backgroundColor: Colors.grey[400],
       body: SafeArea(
@@ -113,7 +45,18 @@ class HomePage extends HookWidget {
               child: Column(
                 children: [
                   status(),
-                  const AddTimeCard(),
+                  TableCalendar(
+                    calendarFormat: CalendarFormat.week,
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: selectedDay ?? DateTime.now(),
+                    onDaySelected: (selected, focused) {
+                      context.read(selectedDateP).state = selected;
+                    },
+                    selectedDayPredicate: (d) {
+                      return selectedDay!.isAtSameMomentAs(d);
+                    },
+                  ),
                   Expanded(child: SingleChildScrollView(child: showRecords())),
                 ],
               ),
@@ -130,10 +73,6 @@ class HomePage extends HookWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            const TextButton(
-              child: Text('Detail Page'),
-              onPressed: null, // TODO:
-            ),
             IconButton(
               icon: const Icon(Icons.settings),
               // child: const Text('Setting'),
@@ -167,6 +106,7 @@ class HomePage extends HookWidget {
 
         return Column(
           children: [
+            const AddTimeCard(),
             for (final i in dayGroup.entries) DayRecordCard(i.key, i.value),
           ],
         );
@@ -219,19 +159,5 @@ class HomePage extends HookWidget {
         );
       },
     );
-  }
-}
-
-extension CollectionUtil<T> on List<T> {
-  List<T> uniqe() {
-    final temp = <T>[];
-
-    for (final item in this) {
-      if (!temp.contains(item)) {
-        temp.add(item);
-      }
-    }
-
-    return temp;
   }
 }

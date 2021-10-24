@@ -28,6 +28,13 @@ class TimeDao extends DatabaseAccessor<Database> with _$TimeDaoMixin {
 
   Future<int> remove(Time time) => delete(times).delete(time);
 
+  Stream<List<Time>> watchingOn(DateTime? selectedDay) {
+    return (select(times)
+          ..where((tbl) => tbl.start.date.equals(
+              '${selectedDay!.year}-${selectedDay.month}-${selectedDay.day}')))
+        .watch();
+  }
+
   // Stream<List<Time>> watching() => select(contents).watch();
 
   // Future<int> add(String title, String content) => into(contents)
