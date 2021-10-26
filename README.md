@@ -42,3 +42,9 @@ hive
 - [x] home page - show time records
 - [x] sort the times of day by start time and long of time
 - [ ] set start of month
+- [ ] راحت تر اضافه و ویرایش کنم
+- [ ] نمایش محدوده مشخص ( روز هفته ماه از تاریخ محدود)
+- [ ] حالت پیش فرض برای حقوق و ساعت کاری تغییر برای ماه های متفاوت
+- [ ] 
+
+
