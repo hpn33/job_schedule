@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:job_schedule/src/service/db/database.dart';
 
-class AddTimeCard extends HookWidget {
+class AddTimeCard extends HookConsumerWidget {
   const AddTimeCard({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final dayDate = useState(DateTime.now());
     final startTime = useState(DateTime.now());
     final endTime = useState(DateTime.now().add(const Duration(hours: 1)));
+
+    final db = ref.read(dbProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),
@@ -104,8 +106,6 @@ class AddTimeCard extends HookWidget {
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                final db = context.read(dbProvider);
-
                 final dd = dayDate.value;
                 final startT = startTime.value;
                 final endT = endTime.value;

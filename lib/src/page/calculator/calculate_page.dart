@@ -16,6 +16,8 @@ class CalculatePage extends HookWidget {
     useEffect(
       () {
         setDefault(ppmController, hpdController);
+
+        return null;
       },
       [],
     );

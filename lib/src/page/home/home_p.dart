@@ -5,7 +5,7 @@ import 'package:job_schedule/src/service/db/database.dart';
 // final timesP = StreamProvider((ref) => ref.read(dbProvider).timeDao.watching());
 
 final timesP = StreamProvider((ref) {
-  final selectedDay = ref.watch(HomePage.selectedDateP).state;
+  final selectedDay = ref.watch(HomePage.selectedDateP.state).state;
 
   return ref.read(dbProvider).timeDao.watchingOn(selectedDay);
 });
@@ -53,7 +53,7 @@ final sortedTimesP = StateProvider<Map<String, List<Time>>>((ref) {
 
 final dayCounterP = StateProvider<int>(
   (ref) => ref
-      .watch(timesStateP)
+      .watch(timesStateP.state)
       .state
       .map((e) => e.start.toString().substring(0, 10))
       .toList()
@@ -63,8 +63,10 @@ final dayCounterP = StateProvider<int>(
 
 final sumOfTimesP = StateProvider<Duration>(
   (ref) {
-    final maped =
-        ref.watch(timesStateP).state.map((e) => e.end.difference(e.start));
+    final maped = ref
+        .watch(timesStateP.state)
+        .state
+        .map((e) => e.end.difference(e.start));
 
     if (maped.isEmpty) {
       return const Duration();
@@ -76,8 +78,8 @@ final sumOfTimesP = StateProvider<Duration>(
 
 final midOfHPD = StateProvider(
   (ref) {
-    final days = ref.watch(dayCounterP).state;
-    final allTime = ref.watch(sumOfTimesP).state;
+    final days = ref.watch(dayCounterP.state).state;
+    final allTime = ref.watch(sumOfTimesP.state).state;
 
     return (allTime.inMinutes / 60.0) / days;
   },

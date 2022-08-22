@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,12 +19,16 @@ class SettingPage extends HookWidget {
 
       hourTextController.text = box.get('hpd', defaultValue: '8');
       priceTextController.text = box.get('ppm', defaultValue: '10000000');
+
+      return null;
     }, []);
 
     useEffect(
       () {
         Future.delayed(const Duration(seconds: 1))
             .then((value) => message.value = '');
+
+        return null;
       },
       [message.value],
     );

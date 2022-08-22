@@ -10,14 +10,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'comp/day_record_card.dart';
 import 'home_p.dart';
 
-class HomePage extends HookWidget {
+class HomePage extends HookConsumerWidget {
   static final selectedDateP =
       StateProvider<DateTime?>((ref) => DateTime.now());
 
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     useEffect(() {
       Future.delayed(const Duration(seconds: 3)).then((value) {
         final box = Hive.box('config');
@@ -31,9 +31,11 @@ class HomePage extends HookWidget {
           );
         }
       });
+
+      return null;
     }, []);
 
-    final selectedDay = useProvider(selectedDateP).state;
+    final selectedDay = ref.watch(selectedDateP.state).state;
 
     return Scaffold(
       backgroundColor: Colors.grey[400],
@@ -51,7 +53,7 @@ class HomePage extends HookWidget {
                     lastDay: DateTime.utc(2030, 3, 14),
                     focusedDay: selectedDay ?? DateTime.now(),
                     onDaySelected: (selected, focused) {
-                      context.read(selectedDateP).state = selected;
+                      ref.read(selectedDateP.state).state = selected;
                     },
                     selectedDayPredicate: (d) {
                       return selectedDay!.isAtSameMomentAs(d);
@@ -100,9 +102,9 @@ class HomePage extends HookWidget {
   }
 
   Widget showRecords() {
-    return HookBuilder(
-      builder: (context) {
-        final dayGroup = useProvider(sortedTimesP).state;
+    return HookConsumer(
+      builder: (context, ref, child) {
+        final dayGroup = ref.watch(sortedTimesP.state).state;
 
         return Column(
           children: [
@@ -115,11 +117,11 @@ class HomePage extends HookWidget {
   }
 
   Widget status() {
-    return HookBuilder(
-      builder: (context) {
-        final timeCounter = useProvider(dayCounterP).state;
-        final sumOfTimes = useProvider(sumOfTimesP).state;
-        final midHPD = useProvider(midOfHPD).state;
+    return HookConsumer(
+      builder: (context, ref, child) {
+        final timeCounter = ref.watch(dayCounterP.state).state;
+        final sumOfTimes = ref.watch(sumOfTimesP.state).state;
+        final midHPD = ref.watch(midOfHPD.state).state;
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 4),

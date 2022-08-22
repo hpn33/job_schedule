@@ -37,34 +37,30 @@ class _CalendarState extends State<Calendar> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           automaticallyImplyLeading: false,
-          title: Text('My Calendar'),
+          title: const Text('My Calendar'),
         ),
         body: Column(
           children: [
             //To Show Current Date
             Container(
                 height: 30,
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  selectedDate.day.toString() +
-                      '-' +
-                      listOfMonths[selectedDate.month - 1] +
-                      ', ' +
-                      selectedDate.year.toString(),
+                  '${selectedDate.day}-${listOfMonths[selectedDate.month - 1]}, ${selectedDate.year}',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
                       color: Colors.indigo[700]),
                 )),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             //To show Calendar Widget
             Container(
               height: 80,
               child: Container(
                 child: ListView.separated(
                   separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(width: 10);
+                    return const SizedBox(width: 10);
                   },
                   itemCount: 365,
                   controller: scrollController,
@@ -87,7 +83,7 @@ class _CalendarState extends State<Calendar> {
                             boxShadow: [
                               BoxShadow(
                                   color: Colors.grey[400]!,
-                                  offset: Offset(3, 3),
+                                  offset: const Offset(3, 3),
                                   blurRadius: 5)
                             ],
                             color: currentDateSelectedIndex == index
@@ -108,9 +104,7 @@ class _CalendarState extends State<Calendar> {
                                       ? Colors.white
                                       : Colors.grey),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            const SizedBox(height: 5),
                             Text(
                               DateTime.now()
                                   .add(Duration(days: index))
@@ -123,9 +117,7 @@ class _CalendarState extends State<Calendar> {
                                       ? Colors.white
                                       : Colors.grey),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            const SizedBox(height: 5),
                             Text(
                               listOfDays[DateTime.now()
                                           .add(Duration(days: index))

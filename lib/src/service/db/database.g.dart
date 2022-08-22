@@ -6,7 +6,7 @@ part of 'database.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+// ignore_for_file: type=lint
 class Time extends DataClass implements Insertable<Time> {
   final int id;
   final String descript;
@@ -230,35 +230,42 @@ class TimesCompanion extends UpdateCompanion<Time> {
 }
 
 class $TimesTable extends Times with TableInfo<$TimesTable, Time> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TimesTable(this._db, [this._alias]);
+  $TimesTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _descriptMeta = const VerificationMeta('descript');
+  @override
   late final GeneratedColumn<String?> descript = GeneratedColumn<String?>(
       'descript', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _startMeta = const VerificationMeta('start');
+  @override
   late final GeneratedColumn<DateTime?> start = GeneratedColumn<DateTime?>(
       'start', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _endMeta = const VerificationMeta('end');
+  @override
   late final GeneratedColumn<DateTime?> end = GeneratedColumn<DateTime?>(
       'end', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _createAtMeta = const VerificationMeta('createAt');
+  @override
   late final GeneratedColumn<DateTime?> createAt = GeneratedColumn<DateTime?>(
       'create_at', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _updateAtMeta = const VerificationMeta('updateAt');
+  @override
   late final GeneratedColumn<DateTime?> updateAt = GeneratedColumn<DateTime?>(
       'update_at', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, descript, start, end, createAt, updateAt];
@@ -311,13 +318,13 @@ class $TimesTable extends Times with TableInfo<$TimesTable, Time> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Time map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Time.fromData(data, _db,
+    return Time.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $TimesTable createAlias(String alias) {
-    return $TimesTable(_db, alias);
+    return $TimesTable(attachedDatabase, alias);
   }
 }
 
